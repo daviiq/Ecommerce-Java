@@ -1,17 +1,16 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Produto {
-    List<String> produtos = new ArrayList<>();
-
     private String nome;
     private int id;
     private double preco;
     private static int quantidadeEstoque = 0;
 
-    public Produto() {}
+    public Produto(int id, String nome, double preco) {
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
+    }
 
     public String getNome() {
         return nome;

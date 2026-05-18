@@ -6,6 +6,8 @@ public class Cliente {
     private String emailCliente;
     private String enderecoCliente;
 
+    public Cliente() {}
+
     public String getEmailCliente() {
         return emailCliente;
     }

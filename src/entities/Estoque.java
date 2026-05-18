@@ -6,7 +6,6 @@ import java.util.List;
 public class Estoque <T> {
 
     private List<Produto> produtos = new ArrayList<>();
-    private static int quantidade;
 
     public Estoque() {}
 
@@ -28,14 +27,14 @@ public class Estoque <T> {
     public void listarEstoque() {
         System.out.println("--- Estoque Atual de Produtos ---");
         for (Produto produto : produtos) {
-            System.out.println(produto.getNome());
+            System.out.println(produto.getNome() + " " + "R$: " + produto.getPreco());
         }
     }
 
     public Produto buscarProdutoPorNome(String nome) {
         for (Produto produto : produtos) {
             if (produto.getNome().equalsIgnoreCase(nome)) {
-               return produto;
+                return produto;
             }
         }
         return null;
