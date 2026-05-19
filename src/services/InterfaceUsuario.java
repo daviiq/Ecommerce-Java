@@ -15,12 +15,13 @@ public interface InterfaceUsuario {
     Produto CadeiraGamer = new Produto(3, "Cadeira Gamer Mancer", 850.00);
     Estoque estoque = new Estoque<>();
 
-     public default void sistemaEcommerce() {
+    public default void sistemaEcommerce() {
 
-         //Adicionando os produtos no estoque
-         estoque.adicionarProdutoNoEstoque(MouseGamer);
-         estoque.adicionarProdutoNoEstoque(Notebook);
-         estoque.adicionarProdutoNoEstoque(CadeiraGamer);
+        //Adicionando os produtos no estoque
+        estoque.adicionarProdutoNoEstoque(MouseGamer);
+        //PRECISA ATUALIZAR O ESTOQUE E GERAR ERRO CASO O PRODUTO ESTEJA FORA DO ESTOQUE
+        estoque.adicionarProdutoNoEstoque(Notebook);
+        estoque.adicionarProdutoNoEstoque(CadeiraGamer);
 
 
         //Interface do Sistema, com Switch Case
@@ -30,12 +31,13 @@ public interface InterfaceUsuario {
         while (sistemaLogado) {
             System.out.println("Digite o número da opção que deseja: ");
             System.out.println("1- Listar produtos disponíveis para compra");
-            System.out.println("2- Comprar produto(s)");
+            System.out.println("2- Adicionar produto(s) no carrinho");
             System.out.println("3- Verificar o carrinho ");
             System.out.println("4- Efetuar compra dos itens do carrinho ");
             System.out.println("5- Status do(s) pedido(s) ");
             System.out.println("6 - Sair ");
             int respostaSistema = scanner.nextInt();
+
             //Impede que encerre o programa dentro do Switch case
             scanner.nextLine();
 
@@ -60,10 +62,11 @@ public interface InterfaceUsuario {
                         System.out.println("Você selecionou: " + produtoEncontrado.getNome());
                         System.out.println("Preço: R$ " + produtoEncontrado.getPreco());
                         System.out.println("Deseja adiciona-lo ao carrinho ? (S/N)");
-                        char repostaProduto = scanner.next().charAt(0);
+                        char repostaProduto = Character.toUpperCase(scanner.next().charAt(0));
                         if (repostaProduto == 'S') {
                             carrinho.adicionarProdutoCarrinho(produtoEncontrado);
                             System.out.println("Produto adicionado no carrinho !");
+                            System.out.println(" ");
                         }
                     } else {
                         System.out.println("Produto não encontrado.");
@@ -71,42 +74,85 @@ public interface InterfaceUsuario {
                     break;
 
                 case 3:
+                    // Exibe o conteúdo do carrinho
                     carrinho.exibirCarrinho();
-                    System.out.println("Deseja retirar algo do carrinho ? (S/N) ");
-                    char repostaEscolha = scanner.next().charAt(0);
-                    if (repostaEscolha == 'S') {
-                        if (!carrinho.estaVazio()) {
-                            System.out.println("Deseja limpar o carrinho ? (S/N)");
-                            char repostaEscolha2 = scanner.next().charAt(0);
-                            if (repostaEscolha2 == 'S') {
-                                carrinho.limparCarrinho();
-                            }
-                            System.out.println("Digite o produto que deseja retirar do carrinho");
 
-                            //Busca no carrinho se o produto existe, retira ele do carrinho e atualiza o estoque
-                            String nomeProduto2 = scanner.nextLine();
-                            Produto produtoEncontrado2 = carrinho.buscarProdutoPorNome(nomeProduto2);
-
-                            if (produtoEncontrado2 != null) {
-                                carrinho.removeProdutoCarrinho(produtoEncontrado2);
-                            }
-                        }
-                        System.out.println("O carrinho está vazio !");
+                    // Se estiver vazio, encerra o case
+                    if (carrinho.estaVazio()) {
+                        System.out.println();
+                        break;
                     }
+
+                    System.out.println("Deseja retirar algo do carrinho? (S/N)");
+                    char respostaEscolha = Character.toUpperCase(scanner.next().charAt(0));
+                    scanner.nextLine(); // limpa o buffer
+
+                    // Se não quiser remover nada, apenas retorna ao menu
+                    if (respostaEscolha == 'N') {
+                        System.out.println();
+                        break;
+                    }
+
+                    // Caso o usuário digite algo diferente de S ou N
+                    if (respostaEscolha != 'S') {
+                        System.out.println("Opção inválida.");
+                        System.out.println();
+                        break;
+                    }
+
+                    // Pergunta se deseja limpar todo o carrinho
+                    System.out.println("Deseja limpar o carrinho? (S/N)");
+                    char respostaEscolha2 = Character.toUpperCase(scanner.next().charAt(0));
+                    scanner.nextLine(); // limpa o buffer
+
+                    // Se desejar limpar tudo
+                    if (respostaEscolha2 == 'S') {
+                        carrinho.limparCarrinho();
+                        System.out.println("O carrinho foi limpo!");
+                        System.out.println();
+                        break;
+                    }
+
+                    // Se não quiser limpar tudo, remove apenas um produto
+                    if (respostaEscolha2 == 'N') {
+                        System.out.println("Digite o produto que deseja retirar do carrinho:");
+                        String nomeProduto2 = scanner.nextLine();
+
+                        // Busca o produto no carrinho
+                        Produto produtoEncontrado2 = carrinho.buscarProdutoPorNome(nomeProduto2);
+
+                        if (produtoEncontrado2 != null) {
+                            carrinho.removeProdutoCarrinho(produtoEncontrado2);
+                            System.out.println("O produto \"" +
+                                    produtoEncontrado2.getNome() +
+                                    "\" foi removido do carrinho!");
+                        } else {
+                            System.out.println("Produto não encontrado no carrinho.");
+                        }
+
+                        System.out.println();
+                        break;
+                    }
+
+                    // Caso o usuário digite algo diferente de S ou N
+                    System.out.println("Opção inválida.");
+                    System.out.println();
                     break;
 
-                case 4:
-                    //PRECISA SER IMPLEMENTADO
-                    break;
+                        case 4:
+                            //PRECISA SER IMPLEMENTADO
 
-                case 5:
-                    //PRECISA SER IMPLEMENTADO
-                    break;
+                            break;
 
-                case 6:
-                    System.out.println("Saindo...");
-                    sistemaLogado = false;
-                    break;
+                        case 5:
+                            //PRECISA SER IMPLEMENTADO
+
+                            break;
+
+                        case 6:
+                            System.out.println("Saindo...");
+                            sistemaLogado = false;
+                            break;
             }
         }
     }
