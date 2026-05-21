@@ -41,6 +41,7 @@ public class Carrinho {
     public void exibirCarrinho() {
         if (estaVazio()) {
             System.out.println("O carrinho está vazio");
+            return;
         }
         System.out.println("------ Carrinho de Compras ------");
         for(Produto produto : produtos) {
@@ -63,5 +64,9 @@ public class Carrinho {
             }
         }
         return null;
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 }

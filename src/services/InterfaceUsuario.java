@@ -4,6 +4,10 @@ import entities.Carrinho;
 import entities.Cliente;
 import entities.Estoque;
 import entities.Produto;
+import entities.FinalizarPedido;
+import entities.ItemPedido;
+import entities.Pedido;
+import services.Status;
 
 import java.util.Scanner;
 
@@ -14,12 +18,12 @@ public interface InterfaceUsuario {
     Produto Notebook = new Produto(2, "Notebook Gamer", 3000.00);
     Produto CadeiraGamer = new Produto(3, "Cadeira Gamer Mancer", 850.00);
     Estoque estoque = new Estoque<>();
+    Pedido pedido = new Pedido();
 
-    public default void sistemaEcommerce() {
+    public default void sistemaEcommerce(Cliente cliente) {
 
         //Adicionando os produtos no estoque
         estoque.adicionarProdutoNoEstoque(MouseGamer);
-        //PRECISA ATUALIZAR O ESTOQUE E GERAR ERRO CASO O PRODUTO ESTEJA FORA DO ESTOQUE
         estoque.adicionarProdutoNoEstoque(Notebook);
         estoque.adicionarProdutoNoEstoque(CadeiraGamer);
 
@@ -140,12 +144,78 @@ public interface InterfaceUsuario {
                     break;
 
                         case 4:
-                            //PRECISA SER IMPLEMENTADO
+                            // Verifica se o carrinho está vazio
+                            if (carrinho.estaVazio()) {
+                                System.out.println("O carrinho está vazio!");
+                                System.out.println();
+                                break;
+                            }
+
+                            // Dados do cliente
+                            System.out.println("Nome cadastrado: " + cliente.getNomeCliente());
+                            System.out.println("Email cadastrado: " + cliente.getEmailCliente());
+                            System.out.println("Digite seu estado:");
+                            String enderecoCliente = scanner.nextLine();
+                            cliente.setEnderecoCliente(enderecoCliente);
+
+                            // Adiciona os produtos do carrinho ao pedido
+                            for (Produto produto : carrinho.getProdutos()) {
+
+                                ItemPedido item = new ItemPedido(
+                                        produto.getNome(),
+                                        produto.getPreco(),
+                                        1
+                                );
+
+                                pedido.adicionarProduto(item);
+                            }
+
+                            // Escolha do pagamento
+                            System.out.println("Escolha a forma de pagamento:");
+                            System.out.println("Pix");
+                            System.out.println("Cartao");
+                            System.out.println("Boleto");
+
+                            String tipoPagamento = scanner.nextLine();
+
+                            // Finaliza pedido
+                            FinalizarPedido finalizarPedido = new FinalizarPedido();
+                            finalizarPedido.executar(pedido, cliente, tipoPagamento);
+
+                            // Atualiza status
+                            pedido.setStatus(Status.PROCESSANDO);
+
+                            System.out.println("Pedido realizado com sucesso!");
+                            System.out.println("Status atual: " + pedido.getStatus());
+
+                            // Limpa carrinho
+                            carrinho.limparCarrinho();
+                            System.out.println();
 
                             break;
 
                         case 5:
-                            //PRECISA SER IMPLEMENTADO
+                            if (pedido.getStatus() == null) {
+                                System.out.println("Nenhum pedido foi realizado ainda.");
+                                System.out.println();
+                                break;
+                            }
+
+                            System.out.println("Status do pedido: " + pedido.getStatus());
+
+                            // Simulação simples de atualização
+                            if (pedido.getStatus() == Status.PROCESSANDO) {
+                                pedido.setStatus(Status.CONFIRMADO);
+                            }
+                            else if (pedido.getStatus() == Status.CONFIRMADO) {
+                                pedido.setStatus(Status.ENVIADO);
+                            }
+                            else if (pedido.getStatus() == Status.ENVIADO) {
+                                pedido.setStatus(Status.ENTREGUE);
+                            }
+
+                            System.out.println("Novo status: " + pedido.getStatus());
+                            System.out.println();
 
                             break;
 

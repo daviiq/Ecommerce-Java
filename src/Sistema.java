@@ -41,6 +41,6 @@ public class Sistema implements InterfaceUsuario {
             }
         }
         //IMPLEMENTAÇÃO DO MÉTODO SISTEMA, AQUI TA TODA A INTERAÇÃO DO USUÁRIO
-        sistema.sistemaEcommerce();
+        sistema.sistemaEcommerce(cliente);
     }
 }
