@@ -1,37 +1,29 @@
-# 🛒 Ecommerce Java
+🛒 Ecommerce Java
 
 Projeto de Ecommerce desenvolvido em Java utilizando conceitos de Programação Orientada a Objetos (POO).
 
 O sistema simula um pequeno ecommerce em modo console, permitindo:
 
-- Listagem de produtos
-- Adição e remoção de produtos do carrinho
-- Finalização de pedidos
-- Escolha de forma de pagamento
-- Atualização de status do pedido
-
----
-
-# 📚 Conceitos utilizados
+Listagem de produtos
+Adição e remoção de produtos do carrinho
+Finalização de pedidos
+Escolha de forma de pagamento
+Atualização de status do pedido
+📚 Conceitos utilizados
 
 O projeto utiliza diversos conceitos importantes de Java e POO:
 
-- Classes e Objetos
-- Encapsulamento
-- Interfaces
-- Herança
-- Enum
-- Listas (`ArrayList`)
-- Métodos Getter e Setter
-- Organização em pacotes
-- Separação de responsabilidades
-- Estrutura de Ecommerce
-
----
-
-# 📂 Estrutura do Projeto
-
-```text
+Classes e Objetos
+Encapsulamento
+Interfaces
+Herança
+Enum
+Listas (ArrayList)
+Métodos Getter e Setter
+Organização em pacotes
+Separação de responsabilidades
+Estrutura de Ecommerce
+📂 Estrutura do Projeto
 src/
 │
 ├── application/
